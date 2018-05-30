@@ -2,26 +2,48 @@
 #include "Input.h"
 #include "Add.h"
 #include "Multiply.h"
-#include "inputs.h"
+// #include "inputs.h"
 
 int main()
 {
-  vector<Node> inputs_1;
-  vector<double> inputValues_1 = {0.4, 0.1, 0.9};
-  initialize_inputs(&inputValues_1, &inputs_1);
 
-  vector<Node> inputs_2;
-  vector<double> inputValues_2 = {3.0, 1.0, 0.5};
-  initialize_inputs(&inputValues_2, &inputs_2);
+  Node n1;
+  n1.setValue(1.0);
+  n1.printValue();
 
-  Add a(inputs_1);
-  Multiply m(inputs_2);
+  Node n2;
+  n2.setValue(2.0);
+  n2.printValue();
+
+  Node n3;
+  n3.setValue(3.0);
+  n3.printValue();
+
+  vector<Node *> inputs = {&n1, &n2, &n3};
+  Add a(inputs);
+  Multiply m(inputs);
+  cout<<"Addition: ";
   a.forward();
-  m.forward();
+  a.printValue();
+  cout<<endl;
 
-  vector<Node> out_inputs = {a, m};
-  Add out(out_inputs);
-  out.forward();
-  out.printValue();
+  cout<<"Multiplication: ";
+  m.forward();
+  m.printValue();
+  cout<<endl;
+
+  cout<<"Changing value of input 3 to 10"<<endl;
+  n3.setValue(10.0);
+
+  cout<<"Addition: ";
+  a.forward();
+  a.printValue();
+  cout<<endl;
+
+  cout<<"Multiplication: ";
+  m.forward();
+  m.printValue();
+  cout<<endl;
+
   return 0;
 }

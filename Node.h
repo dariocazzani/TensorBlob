@@ -10,14 +10,17 @@ class Node
 {
 private:
   double value;
-  vector<Node> inbound_nodes;
-  vector<Node> outbound_nodes;
+  vector<Node *> inNodes;
+  vector<Node *> outNodes;
 public:
   Node();
   void setValue(double value);
+  void addInput(Node *input);
+  void addOutput(Node *input);
+
   double getValue();
-  void setInbounds(vector<Node> input_nodes);
-  vector<Node> * getInbounds();
+  vector<double> getInputValues();
+  vector<double> getOutputValues();
   void forward();
   void printValue();
 };
@@ -33,19 +36,37 @@ void Node::setValue(double value)
 
 double Node::getValue()
 {
-  return this->value;
+  return value;
 }
 
-void Node::setInbounds(vector<Node> input_nodes)
+vector<double> Node::getInputValues()
 {
-  for(auto it = input_nodes.begin(); it != input_nodes.end(); ++it){
-    inbound_nodes.push_back(*it);
-  }
+  vector<double> values;
+  for(auto n : inNodes)
+    values.push_back(n->getValue());
+  return values;
 }
-vector<Node> * Node::getInbounds()
+
+vector<double> Node::getOutputValues()
 {
-  return &inbound_nodes;
+  vector<double> values;
+  for(auto n : outNodes)
+    values.push_back(n->getValue());
+  return values;
 }
+
+void Node::addInput(Node *input)
+{
+  this->inNodes.push_back(input);
+  input->outNodes.push_back(this);
+}
+
+void Node::addOutput(Node *output)
+{
+  this->outNodes.push_back(output);
+  output->outNodes.push_back(this);
+}
+
 void Node::forward() {}
 
 void Node::printValue()

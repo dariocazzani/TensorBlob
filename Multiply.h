@@ -6,21 +6,28 @@
 class Multiply : public Node
 {
 public:
-  Multiply(vector<Node> inputs);
+  Multiply();
+  Multiply(vector<Node *> &inNodes);
   void forward();
 };
 
-Multiply::Multiply(vector<Node> inputs)
+Multiply::Multiply()
 {
-  setInbounds(inputs);
+  Node();
+}
+Multiply::Multiply(vector<Node *> &inNodes)
+{
+  for (auto i: inNodes){
+    this->addInput(i);
+  }
 }
 
 void Multiply::forward()
 {
-  vector<Node> * inbounds = getInbounds();
+  vector<double> in = this->getInputValues();
   double mul = 1.0f;
-  for(auto it = inbounds->begin(); it != inbounds->end(); ++it) {
-    mul *= it->getValue();
+  for (auto i : in){
+    mul *= i;
   }
   setValue(mul);
 }

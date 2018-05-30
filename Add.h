@@ -6,21 +6,28 @@
 class Add : public Node
 {
 public:
-  Add(vector<Node> inputs);
+  Add();
+  Add(vector<Node *> &inNodes);
   void forward();
 };
 
-Add::Add(vector<Node> inputs)
+Add::Add()
 {
-  setInbounds(inputs);
+  Node();
+}
+Add::Add(vector<Node *> &inNodes)
+{
+  for (auto i: inNodes){
+    this->addInput(i);
+  }
 }
 
 void Add::forward()
 {
-  vector<Node> * inbounds = getInbounds();
+  vector<double> in = this->getInputValues();
   double sum = 0.0f;
-  for(auto it = inbounds->begin(); it != inbounds->end(); ++it) {
-    sum += it->getValue();
+  for (auto i : in){
+    sum += i;
   }
   setValue(sum);
 }
