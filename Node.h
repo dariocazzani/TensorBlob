@@ -21,7 +21,8 @@ public:
   double getValue();
   vector<double> getInputValues();
   vector<double> getOutputValues();
-  void forward();
+  vector<Node *> getOutputNodes();
+  virtual void forward();
   void printValue();
 };
 
@@ -53,6 +54,11 @@ vector<double> Node::getOutputValues()
   for(auto n : outNodes)
     values.push_back(n->getValue());
   return values;
+}
+
+vector<Node *> Node::getOutputNodes()
+{
+  return outNodes;
 }
 
 void Node::addInput(Node *input)
