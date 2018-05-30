@@ -6,17 +6,17 @@
 class Input : public Node
 {
 public:
+  Input();
   Input(double value);
-  void forward(double value);
+  void forward();
 };
 
+Input::Input() {}
 Input::Input(double value)
 {
   setValue(value);
 }
-void Input::forward(double value)
-{
-  setValue(value);
-}
+
+void Input::forward() {}
 
 #endif
