@@ -19,6 +19,9 @@ void buildGraph(vector<Node *> & g);
  */
 vector<double> forwardProp(vector<Node *> graph, map<Node*, double> inputMap);
 
+
+
+
 void buildGraph(vector<Node *> & g)
 /*
 https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/

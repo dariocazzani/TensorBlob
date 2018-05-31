@@ -21,8 +21,10 @@ int main()
   buildGraph(graph);
 
   map<Node*, double> inputMap;
-  inputMap[&i1] = 3.0;
-  inputMap[&i2] = 3.0;
+  cout<<"Input 1? : ";
+  cin>>inputMap[&i1];
+  cout<<"Input 2? : ";
+  cin>>inputMap[&i2];
 
   vector<double> results = forwardProp(graph, inputMap);
 
