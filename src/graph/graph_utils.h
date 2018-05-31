@@ -6,8 +6,18 @@
 #include <stdexcept>
 #include "DAGException.h"
 
-// Use Kahn's algorithm to sort nodes
+/*
+ * Use Kahn's algorithm to sort nodes
+ * Sort Graph so that we can run forward (and backward) propagation
+ */
 void buildGraph(vector<Node *> & g);
+
+/*
+ * inputMap is loosely inspired by TensorFlow feed_dict
+ * Run Forward propagation given a computation graph and the values to assign to
+ * the inputs
+ */
+vector<double> forwardProp(vector<Node *> graph, map<Node*, double> inputMap);
 
 void buildGraph(vector<Node *> & g)
 /*
@@ -73,6 +83,36 @@ https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
     throw DAGException();
   }
   temp.swap(g);
+}
+
+
+vector<double> forwardProp(vector<Node *> graph, map<Node*, double> inputMap)
+{
+  vector<double> results;
+
+  // Assign the desired values to the inputs
+  map<Node*, double>::iterator it = inputMap.begin();
+  while(it != inputMap.end()){
+    // Verify that we were given only Input nodes to assign values to
+    if(Input* b1 = dynamic_cast<Input*> (it->first)){
+      it->first->setValue(it->second);
+    }
+    else{
+      throw("Invalid Input type.");
+    }
+    ++it;
+  }
+  for(auto n : graph){
+    n->forward();
+  }
+
+  // Find output nodes
+  for(auto n : graph){
+    if(n->getOutputNodes().size() == 0){
+      results.push_back(n->getValue());
+    }
+  }
+  return results;
 }
 
 #endif
