@@ -2,7 +2,6 @@ CXX = g++ -std=c++11
 DEBUG = -g
 CFLAGS = -Wall -Wextra -Werror -pedantic $(DEBUG)
 
-SRCDIR := ../src/
 BUILDDIR := ../build/
 TARGET := ../bin/
 
