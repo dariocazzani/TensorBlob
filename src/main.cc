@@ -24,7 +24,7 @@ int main()
   inputMap[&i1] = 3.0;
   inputMap[&i2] = 3.0;
 
-  vector<double> results = runGraph(graph, inputMap);
+  vector<double> results = forwardProp(graph, inputMap);
 
   cout<<"Output of computation graph: \n";
   for(auto r : results){
