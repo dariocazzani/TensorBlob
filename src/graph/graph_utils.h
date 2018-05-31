@@ -14,9 +14,7 @@ void buildGraph(vector<Node *> & g)
 https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
 */
 {
-  vector<Node *> temp;
   int visitedNodes = 0;
-
   /*
    * Compute in-degree (number of incoming edges) for each
    * of the vertex present in the DAG
@@ -40,7 +38,6 @@ https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
     }
     ++it;
   }
-
   /* Remove a vertex from the queue (Dequeue operation) and then.
    *
    * Increment count of visited nodes by 1.
@@ -51,6 +48,7 @@ https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
   Node *current;
   vector<Node *> neighbours;
 
+  vector<Node *> temp;
   while(!q.empty()){
     current = q.front();
     temp.push_back(current);
@@ -71,7 +69,7 @@ https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
       }
     }
   }
-  if(visitedNodes < g.size()){
+  if(visitedNodes <static_cast<int>(g.size())){
     throw DAGException();
   }
   temp.swap(g);
