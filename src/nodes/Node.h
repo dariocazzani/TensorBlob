@@ -1,6 +1,8 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include "../../include/Eigen/Dense"
+
 #include<iostream>
 #include<vector>
 
@@ -9,18 +11,20 @@ using namespace std;
 class Node
 {
 private:
-  double value;
+  Eigen::VectorXd values;
   vector<Node *> inNodes;
   vector<Node *> outNodes;
 public:
   Node();
-  void setValue(double value);
+  Node(vector<Node *> &inNodes);
+  void setValues(double value);
+  void setValues(const Eigen::VectorXd &values);
   void addInput(Node *input);
   void addOutput(Node *input);
 
-  double getValue();
-  vector<double> getInputValues();
-  vector<double> getOutputValues();
+  void getValues(Eigen::VectorXd &values);
+  vector<Eigen::VectorXd> getInputValues();
+  vector<Eigen::VectorXd> getOutputValues();
   vector<Node *> getOutputNodes();
   virtual void forward();
   void printValue();
@@ -28,32 +32,55 @@ public:
 
 Node::Node()
 {
-  this->value = 0.0f;
-}
-void Node::setValue(double value)
-{
-  this->value = value;
+  this->values.resize(1);
+  this->values << 0.0f;
 }
 
-double Node::getValue()
+Node::Node(vector<Node *> &inNodes)
 {
-  return value;
+  for (auto i: inNodes){
+    this->addInput(i);
+  }
 }
 
-vector<double> Node::getInputValues()
+void Node::setValues(double value)
 {
-  vector<double> values;
-  for(auto n : inNodes)
-    values.push_back(n->getValue());
-  return values;
+  this->values.resize(1);
+  this->values << value;
 }
 
-vector<double> Node::getOutputValues()
+void Node::setValues(const Eigen::VectorXd &values)
 {
-  vector<double> values;
-  for(auto n : outNodes)
-    values.push_back(n->getValue());
-  return values;
+  this->values = values;
+}
+
+void Node::getValues(Eigen::VectorXd &values)
+{
+  values = this->values;
+}
+
+vector<Eigen::VectorXd> Node::getInputValues()
+{
+  vector<Eigen::VectorXd> vector_values;
+  Eigen::VectorXd values;
+
+  for(auto n : inNodes) {
+    n->getValues(values);
+    vector_values.push_back(values);
+  }
+  return vector_values;
+}
+
+vector<Eigen::VectorXd> Node::getOutputValues()
+{
+  vector<Eigen::VectorXd> vector_values;
+  Eigen::VectorXd values;
+
+  for(auto n : outNodes) {
+    n->getValues(values);
+    vector_values.push_back(values);
+  }
+return vector_values;
 }
 
 vector<Node *> Node::getOutputNodes()
@@ -77,7 +104,9 @@ void Node::forward() {}
 
 void Node::printValue()
 {
-  cout<<"Value: " << getValue() <<endl;
+  Eigen::VectorXd values;
+  getValues(values);
+  cout<<"Value: " << values <<endl;
 }
 
 #endif

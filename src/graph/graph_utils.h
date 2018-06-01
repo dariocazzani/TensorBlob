@@ -5,6 +5,7 @@
 #include <queue>
 #include <stdexcept>
 #include "DAGException.h"
+#include "../nodes/Input.h"
 
 /*
  * Use Kahn's algorithm to sort nodes
@@ -17,7 +18,7 @@ void buildGraph(vector<Node *> & g);
  * Run Forward propagation given a computation graph and the values to assign to
  * the inputs
  */
-vector<double> forwardProp(vector<Node *> graph, map<Node*, double> inputMap);
+vector<Eigen::VectorXd> forwardProp(vector<Node *> graph, map<Node*, double> inputMap);
 
 
 
@@ -33,7 +34,7 @@ https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
    * of the vertex present in the DAG
    */
   map <Node*, int> inNodesCount;
-  vector<double> inputs;
+  vector<Eigen::VectorXd> inputs;
   for(auto n : g){
     inputs = n->getInputValues();
     inNodesCount.insert(pair <Node*, int> (n, inputs.size()));
@@ -89,16 +90,16 @@ https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
 }
 
 
-vector<double> forwardProp(vector<Node *> graph, map<Node*, double> inputMap)
+vector<Eigen::VectorXd> forwardProp(vector<Node *> graph, map<Node*, double> inputMap)
 {
-  vector<double> results;
+  vector<Eigen::VectorXd> results;
 
   // Assign the desired values to the inputs
   map<Node*, double>::iterator it = inputMap.begin();
   while(it != inputMap.end()){
     // Verify that we were given only Input nodes to assign values to
     if(Input* b1 = dynamic_cast<Input*> (it->first)){
-      it->first->setValue(it->second);
+      it->first->setValues(it->second);
     }
     else{
       throw("Invalid Input type.");
@@ -110,9 +111,11 @@ vector<double> forwardProp(vector<Node *> graph, map<Node*, double> inputMap)
   }
 
   // Find output nodes
+  Eigen::VectorXd temp;
   for(auto n : graph){
     if(n->getOutputNodes().size() == 0){
-      results.push_back(n->getValue());
+      n->getValues(temp);
+      results.push_back(temp);
     }
   }
   return results;

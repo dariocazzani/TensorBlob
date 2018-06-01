@@ -8,14 +8,21 @@ class Input : public Node
 public:
   Input();
   Input(double value);
+  Input(const Eigen::VectorXd &values);
   void forward();
 };
 
 Input::Input() {}
 Input::Input(double value)
 {
-  setValue(value);
+  setValues(value);
 }
+
+Input::Input(const Eigen::VectorXd &values)
+{
+  setValues(values);
+}
+
 
 void Input::forward() {}
 
