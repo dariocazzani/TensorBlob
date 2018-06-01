@@ -6,9 +6,9 @@
 
 TEST_CASE("Set Value", "[SET]" ) {
     Node n;
-    double refValue {3.0};
+    Eigen::MatrixXd refValue = Eigen::MatrixXd::Random(3,3);
     n.setValues(refValue);
-    Eigen::VectorXd value;
+    Eigen::MatrixXd value;
     n.getValues(value);
-    REQUIRE(refValue == value(0));
+    REQUIRE(refValue == value);
 }

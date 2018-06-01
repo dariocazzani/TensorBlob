@@ -14,15 +14,15 @@ class Linear : public Node
 {
 private:
   // Store address of different inputs for easier use
-  map<string, vector<Node *>> inputsMap;
+  map<string, Node *> inputsMap;
 
 public:
   Linear(Node *inputs,
          Node *weights,
          Node *bias);
-  void getLinearInputs(Eigen::VectorXd &values);
-  void getLinearWeights(Eigen::VectorXd &values);
-  void getLinearBias(Eigen::VectorXd &values);
+  void getLinearInputs(Eigen::MatrixXd &values);
+  void getLinearWeights(Eigen::MatrixXd &values);
+  void getLinearBias(Eigen::MatrixXd &values);
   void forward();
 };
 
@@ -38,28 +38,28 @@ Linear::Linear(Node *inputs,
   this->addInput(bias);
 }
 
-void Linear::getLinearInputs(Eigen::VectorXd &values) {
+void Linear::getLinearInputs(Eigen::MatrixXd &values) {
   inputsMap["inputs"]->getValues(values);
 }
 
-void Linear::getLinearWeights(Eigen::VectorXd &values) {
+void Linear::getLinearWeights(Eigen::MatrixXd &values) {
   inputsMap["weights"]->getValues(values);
 }
 
-void Linear::getLinearBias(Eigen::VectorXd &values) {
+void Linear::getLinearBias(Eigen::MatrixXd &values) {
   inputsMap["bias"]->getValues(values);
 }
 
 void Linear::forward()
 {
-  Eigen::VectorXd = inputs;
-  Eigen::VectorXd = weights;
-  Eigen::VectorXd = bias;
+  Eigen::MatrixXd inputs;
+  Eigen::MatrixXd weights;
+  Eigen::MatrixXd bias;
   getLinearInputs(inputs);
   getLinearWeights(weights);
   getLinearBias(bias);
 
-  VectorXd value = inputs.dot(weights) + bias;
-  setValue(value);
+  Eigen::MatrixXd value = inputs * weights + bias;
+  setValues(value);
 }
 #endif

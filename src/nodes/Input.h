@@ -8,7 +8,7 @@ class Input : public Node
 public:
   Input();
   Input(double value);
-  Input(const Eigen::VectorXd &values);
+  Input(const Eigen::MatrixXd &values);
   void forward();
 };
 
@@ -18,7 +18,7 @@ Input::Input(double value)
   setValues(value);
 }
 
-Input::Input(const Eigen::VectorXd &values)
+Input::Input(const Eigen::MatrixXd &values)
 {
   setValues(values);
 }
