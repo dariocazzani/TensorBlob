@@ -1,6 +1,7 @@
 #include "nodes/Node.h"
 #include "nodes/Linear.h"
 #include "nodes/Input.h"
+#include "nodes/Sigmoid.h"
 #include "graph/graph_utils.h"
 
 int main()
@@ -10,18 +11,18 @@ int main()
   // 2 features, 3 hidden neurons
   Eigen::MatrixXd weights(2, 3);
   // weights.resize(2, 3);
-  weights << 1, 2, 3,
-             4, 5, 6;
+  weights << -0.3, -0.2, -0.1,
+              0.1,  0.2,  0.3;
 
   // 4 sample, 2 features
   Eigen::MatrixXd inputs(4, 2);
-  inputs << 1, 2,
-            3, 4,
-            5, 6,
-            7, 8;
+  inputs << -0.4, -0.3,
+            -0.2, -0.1,
+             0.1,  0.2,
+             0.3,  0.4;
 
   Eigen::MatrixXd bias(1,3);
-  bias << 1, 2, 3;
+  bias << 0.5, 0.2, -0.3;
 
 
   // DEFINE NODES AND CONNECT THEM
@@ -31,7 +32,8 @@ int main()
 
   // BUILD GRAPH
   Linear hidden1(&X, &W, &b);
-  vector<Node *> graph = {&hidden1, &W, &b, &X};
+  Sigmoid out1(&hidden1);
+  vector<Node *> graph = {&hidden1, &W, &b, &X, &out1};
   buildGraph(graph);
 
   // FEED_DICT
