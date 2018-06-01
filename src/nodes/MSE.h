@@ -3,7 +3,7 @@
 
 #include "Node.h"
 
-// NB Has exactly 2 inputs Nodes
+// NB MSE Has exactly 2 inputs Nodes
 class MSE : public Node
 {
 public:
