@@ -18,8 +18,7 @@ void buildGraph(vector<Node *> & g);
  * Run Forward propagation given a computation graph and the values to assign to
  * the inputs
  */
-vector<Eigen::MatrixXd> forwardProp(vector<Node *> graph, map<Node*, double> inputMap);
-
+vector<Eigen::MatrixXd> forwardProp(const vector<Node *> *graph, map<Node*, Eigen::MatrixXd> inputMap);
 
 
 
@@ -90,12 +89,12 @@ https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
 }
 
 
-vector<Eigen::MatrixXd> forwardProp(vector<Node *> graph, map<Node*, double> inputMap)
+vector<Eigen::MatrixXd> forwardProp(const vector<Node *> *graph, map<Node*, Eigen::MatrixXd> inputMap)
 {
   vector<Eigen::MatrixXd> results;
 
   // Assign the desired values to the inputs
-  map<Node*, double>::iterator it = inputMap.begin();
+  map<Node*, Eigen::MatrixXd>::iterator it = inputMap.begin();
   while(it != inputMap.end()){
     // Verify that we were given only Input nodes to assign values to
     if(Input* b1 = dynamic_cast<Input*> (it->first)){
@@ -106,13 +105,13 @@ vector<Eigen::MatrixXd> forwardProp(vector<Node *> graph, map<Node*, double> inp
     }
     ++it;
   }
-  for(auto n : graph){
+  for(auto n : *graph){
     n->forward();
   }
 
   // Find output nodes
   Eigen::MatrixXd temp;
-  for(auto n : graph){
+  for(auto n : *graph){
     if(n->getOutputNodes().size() == 0){
       n->getValues(temp);
       results.push_back(temp);
