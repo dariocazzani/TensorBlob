@@ -1,5 +1,5 @@
-# Cpp-MiniFlow
-An implementation of MiniFlow (simpler version of Google TensorFlow) in C++
+# TensorBlob
+An implementation of a Computational Graph in C++ for Machine Learning problems
 
 ## TODO
 
