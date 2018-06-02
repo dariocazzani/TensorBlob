@@ -21,7 +21,7 @@ TEST_CASE("Build Directed Acyclic Graph", "[DAG]" ) {
   Node n1(inputs);
 
   vector<Node *> graph = {&n0, &n1, &n2, &n3, &n4, &n5};
-  CHECK_NOTHROW(buildGraph(graph));
+  CHECK_NOTHROW(topologicalSort(graph));
 }
 
 TEST_CASE("Build NOT Direceted Acyclic Graph", "[DAG]" ) {
@@ -43,5 +43,5 @@ TEST_CASE("Build NOT Direceted Acyclic Graph", "[DAG]" ) {
   n5.addInput(&n0);
 
   vector<Node *> graph = {&n0, &n1, &n2, &n3, &n4, &n5};
-  CHECK_THROWS(buildGraph(graph));
+  CHECK_THROWS(topologicalSort(graph));
 }

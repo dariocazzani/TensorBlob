@@ -11,6 +11,7 @@ private:
 public:
   Sigmoid(Node *inputs);
   void forward();
+  void backward();
 };
 
 Eigen::MatrixXd Sigmoid::sigmoid(const Eigen::MatrixXd &values) {
@@ -27,5 +28,7 @@ void Sigmoid::forward()
   inputs = sigmoid(getInputValues()[0]);
   setValues(inputs);
 }
+
+void Sigmoid::backward() {}
 
 #endif

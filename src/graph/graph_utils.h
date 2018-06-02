@@ -6,23 +6,45 @@
 #include <stdexcept>
 #include "DAGException.h"
 #include "../nodes/Input.h"
+#include <boost/range/adaptor/reversed.hpp>
+
 
 /*
  * Use Kahn's algorithm to sort nodes
  * Sort Graph so that we can run forward (and backward) propagation
  */
-void buildGraph(vector<Node *> & g);
+void topologicalSort(vector<Node *> &graph);
 
 /*
  * inputMap is loosely inspired by TensorFlow feed_dict
  * Run Forward propagation given a computation graph and the values to assign to
  * the inputs
  */
-vector<Eigen::MatrixXd> forwardProp(const vector<Node *> *graph, map<Node*, Eigen::MatrixXd> inputMap);
+void buildGraph(vector<Node *> &graph, map<Node*, Eigen::MatrixXd> inputMap);
+
+vector<Eigen::MatrixXd> forwardBackward(const vector<Node *> &graph);
 
 
 
-void buildGraph(vector<Node *> & g)
+void buildGraph(vector<Node *> & graph, map<Node*, Eigen::MatrixXd> inputMap)
+{
+  topologicalSort(graph);
+
+  // Assign the desired values to the inputs
+  map<Node*, Eigen::MatrixXd>::iterator it = inputMap.begin();
+  while(it != inputMap.end()){
+    // Verify that we were given only Input nodes to assign values to
+    if(Input* b1 = dynamic_cast<Input*> (it->first)){
+      it->first->setValues(it->second);
+    }
+    else{
+      throw("Invalid Input type.");
+    }
+    ++it;
+  }
+}
+
+void topologicalSort(vector<Node *> &graph)
 /*
 https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
 */
@@ -34,7 +56,7 @@ https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
    */
   map <Node*, int> inNodesCount;
   vector<Eigen::MatrixXd> inputs;
-  for(auto n : g){
+  for(auto n : graph){
     inputs = n->getInputValues();
     inNodesCount.insert(pair <Node*, int> (n, inputs.size()));
   }
@@ -82,36 +104,27 @@ https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
       }
     }
   }
-  if(visitedNodes <static_cast<int>(g.size())){
+  if(visitedNodes <static_cast<int>(graph.size())){
     throw DAGException();
   }
-  temp.swap(g);
+  temp.swap(graph);
 }
 
 
-vector<Eigen::MatrixXd> forwardProp(const vector<Node *> *graph, map<Node*, Eigen::MatrixXd> inputMap)
+vector<Eigen::MatrixXd> forwardBackward(const vector<Node *> &graph)
 {
   vector<Eigen::MatrixXd> results;
-
-  // Assign the desired values to the inputs
-  map<Node*, Eigen::MatrixXd>::iterator it = inputMap.begin();
-  while(it != inputMap.end()){
-    // Verify that we were given only Input nodes to assign values to
-    if(Input* b1 = dynamic_cast<Input*> (it->first)){
-      it->first->setValues(it->second);
-    }
-    else{
-      throw("Invalid Input type.");
-    }
-    ++it;
-  }
-  for(auto n : *graph){
+  for(auto n : graph){
     n->forward();
+  }
+
+  for (auto n : boost::adaptors::reverse(graph)) {
+    n->backward();
   }
 
   // Find output nodes
   Eigen::MatrixXd temp;
-  for(auto n : *graph){
+  for(auto n : graph){
     if(n->getOutputNodes().size() == 0){
       n->getValues(temp);
       results.push_back(temp);

@@ -27,6 +27,7 @@ public:
   vector<Eigen::MatrixXd> getOutputValues();
   vector<Node *> getOutputNodes();
   virtual void forward();
+  virtual void backward();
   void printValue();
 };
 
@@ -101,6 +102,8 @@ void Node::addOutput(Node *output)
 }
 
 void Node::forward() {}
+
+void Node::backward() {}
 
 void Node::printValue()
 {

@@ -28,6 +28,7 @@ public:
   void getLinearWeights(Eigen::MatrixXd &values);
   void getLinearBias(Eigen::MatrixXd &values);
   void forward();
+  void backward();
 };
 
 void Linear::validateInputs(const Eigen::MatrixXd &inputs,
@@ -91,4 +92,7 @@ void Linear::forward()
   Eigen::MatrixXd value = (inputs * weights).transpose().colwise() + biasFlat;
   setValues(value.transpose());
 }
+
+void Linear::backward() {}
+
 #endif

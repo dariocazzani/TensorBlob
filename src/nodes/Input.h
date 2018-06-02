@@ -10,6 +10,7 @@ public:
   Input(double value);
   Input(const Eigen::MatrixXd &values);
   void forward();
+  void backward();
 };
 
 Input::Input() {}
@@ -25,5 +26,6 @@ Input::Input(const Eigen::MatrixXd &values)
 
 
 void Input::forward() {}
+void Input::backward() {}
 
 #endif

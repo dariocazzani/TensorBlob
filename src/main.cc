@@ -46,7 +46,6 @@ int main()
   MSE cost(&out, &Y);
 
   vector<Node *> graph = {&hidden1, &W1, &b1, &W2, &b2, &X, &outHidden1, &out, &Y, &cost};
-  buildGraph(graph);
 
   // FEED_DICT
   map<Node*, Eigen::MatrixXd> inputMap;
@@ -57,8 +56,9 @@ int main()
   inputMap[&X] = inputs;
   inputMap[&Y] = labels;
 
+  buildGraph(graph, inputMap);
 
-  vector<Eigen::MatrixXd> results = forwardProp(&graph, inputMap);
+  vector<Eigen::MatrixXd> results = forwardBackward(graph);
   for(auto r : results){
     cout<<r<<endl;
   }

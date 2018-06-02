@@ -9,6 +9,7 @@ class MSE : public Node
 public:
   MSE(Node *activations, Node *reference);
   void forward();
+  void backward();
 };
 
 MSE::MSE(Node *activations, Node *reference)
@@ -34,5 +35,7 @@ void MSE::forward()
 
   setValues(mse);
 }
+
+void MSE::backward() {}
 
 #endif
