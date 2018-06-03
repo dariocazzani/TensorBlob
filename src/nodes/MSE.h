@@ -2,20 +2,17 @@
 #define MSE_H
 
 #include "Node.h"
-#include <map>
 // NB MSE Has exactly 2 inputs Nodes
 class MSE : public Node
 {
 private:
   double batchSize = {0.0f};
   Eigen::MatrixXd diff;
-  map<Node *, Eigen::MatrixXd> gradients;
 
 public:
   MSE(Node *activations, Node *reference);
   void forward();
   void backward();
-  void getGradient(Node *n, Eigen::MatrixXd &grad);
 };
 
 MSE::MSE(Node *activations, Node *reference)
@@ -56,15 +53,8 @@ void MSE::backward()
   gradActivations = (2.0f / batchSize) * diff;
 
   vector<Node *> inputs = getInputNodes();
-  gradients[inputs[0]] = gradActivations;
-  gradients[inputs[1]] = gradReference;
-}
-
-void MSE::getGradient(Node *n, Eigen::MatrixXd &grad)
-{
-  if(n) {
-    grad = gradients[n];
-  }
+  setGradients(inputs[0], gradActivations);
+  setGradients(inputs[1], gradReference);
 }
 
 #endif

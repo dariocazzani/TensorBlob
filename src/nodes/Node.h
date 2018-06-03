@@ -3,15 +3,16 @@
 
 #include "../../include/Eigen/Dense"
 
-#include<iostream>
-#include<vector>
-
+#include <iostream>
+#include <vector>
+#include <map>
 using namespace std;
 
 class Node
 {
 private:
   Eigen::MatrixXd values;
+  map<const Node *, Eigen::MatrixXd> gradients;
   vector<Node *> inNodes;
   vector<Node *> outNodes;
 public:
@@ -21,6 +22,8 @@ public:
   void setValues(const Eigen::MatrixXd &values);
   void addInput(Node *input);
   void addOutput(Node *input);
+  void setGradients(Node *n, const Eigen::MatrixXd &grad);
+  void getGradients(const Node *n, Eigen::MatrixXd &grad);
 
   void getValues(Eigen::MatrixXd &values);
   vector<Eigen::MatrixXd> getInputValues();
@@ -54,6 +57,20 @@ void Node::setValues(double value)
 void Node::setValues(const Eigen::MatrixXd &values)
 {
   this->values = values;
+}
+
+void Node::setGradients(Node *n, const Eigen::MatrixXd &grad)
+{
+  if(n) {
+    gradients[n] = grad;
+  }
+}
+
+void Node::getGradients(const Node *n, Eigen::MatrixXd &grad)
+{
+  if(n) {
+    grad = gradients[n];
+  }
 }
 
 void Node::getValues(Eigen::MatrixXd &values)

@@ -79,7 +79,7 @@ TEST_CASE("Backward propagation for MSE", "[MSE]" ) {
 
   double epsilon = 1.0e-7;
   Eigen::MatrixXd ga, gl;
-  mse.getGradient(&act, ga);
-  mse.getGradient(&l, gl);
+  mse.getGradients(&act, ga);
+  mse.getGradients(&l, gl);
   REQUIRE(((ga - gradAct).norm() + (gl - gradLab).norm()) < epsilon);
 }
