@@ -26,6 +26,7 @@ public:
   vector<Eigen::MatrixXd> getInputValues();
   vector<Eigen::MatrixXd> getOutputValues();
   vector<Node *> getOutputNodes();
+  vector<Node *> getInputNodes();
   virtual void forward();
   virtual void backward();
   void printValue();
@@ -87,6 +88,11 @@ return vector_values;
 vector<Node *> Node::getOutputNodes()
 {
   return outNodes;
+}
+
+vector<Node *> Node::getInputNodes()
+{
+  return inNodes;
 }
 
 void Node::addInput(Node *input)

@@ -10,11 +10,12 @@ all: build
 	$(TARGET)node_test
 	$(TARGET)graph_test
 	$(TARGET)sigmoid_test
+	$(TARGET)MSE_test
 
 first:
 	@echo " Building tests..."
 
-build: node_test graph_test sigmoid_test
+build: node_test graph_test sigmoid_test MSE_test
 
 node_test : node_test.o
 	$(CXX) -o $(TARGET)node_test $(BUILDDIR)node_test.o
@@ -33,6 +34,12 @@ sigmoid_test : sigmoid_test.o
 
 sigmoid_test.o: sigmoid_test.cc
 	$(CXX) $(CFLAGS) -c sigmoid_test.cc -o $(BUILDDIR)sigmoid_test.o
+
+MSE_test : MSE_test.o
+	$(CXX) -o $(TARGET)MSE_test $(BUILDDIR)MSE_test.o
+
+MSE_test.o: MSE_test.cc
+	$(CXX) $(CFLAGS) -c MSE_test.cc -o $(BUILDDIR)MSE_test.o
 
 
 clean:
