@@ -98,13 +98,13 @@ TEST_CASE("Backward propagation for Linear - 1 hidden layer", "[LINEAR]" ) {
   vector<Eigen::MatrixXd> results = forwardBackward(graph);
 
   Eigen::MatrixXd gW;
-  W.getGradients(&W, gW);
+  f.getGradients(&W, gW);
 
   Eigen::MatrixXd gb;
-  b.getGradients(&b, gb);
+  f.getGradients(&b, gb);
 
   Eigen::MatrixXd gX;
-  X.getGradients(&X, gX);
+  f.getGradients(&X, gX);
 
   double epsilon = 1.0e-7;
   REQUIRE( ((weightsGrads - gW).norm()) +
