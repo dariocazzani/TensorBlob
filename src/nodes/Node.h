@@ -21,7 +21,6 @@ public:
   void setValues(double value);
   void setValues(const Eigen::MatrixXd &values);
   void addInput(Node *input);
-  void addOutput(Node *input);
   void setGradients(const Node *n, const Eigen::MatrixXd &grad);
   void getGradients(const Node *n, Eigen::MatrixXd &grad);
 
@@ -127,12 +126,6 @@ void Node::addInput(Node *input)
 {
   this->inNodes.push_back(input);
   input->outNodes.push_back(this);
-}
-
-void Node::addOutput(Node *output)
-{
-  this->outNodes.push_back(output);
-  output->outNodes.push_back(this);
 }
 
 void Node::forward() {}
