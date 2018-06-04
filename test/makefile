@@ -47,6 +47,11 @@ input_test : input_test.o
 input_test.o: input_test.cc
 	$(CXX) $(CFLAGS) -c input_test.cc -o $(BUILDDIR)input_test.o
 
+linear_test : linear_test.o
+	$(CXX) -o $(TARGET)linear_test $(BUILDDIR)linear_test.o
+
+linear_test.o: linear_test.cc
+	$(CXX) $(CFLAGS) -c linear_test.cc -o $(BUILDDIR)linear_test.o
 
 
 clean:

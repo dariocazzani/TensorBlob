@@ -93,6 +93,34 @@ void Linear::forward()
   setValues(value.transpose());
 }
 
-void Linear::backward() {}
+void Linear::backward()
+{
+  vector<Node *> inputs = getInputNodes();
+  vector<Node *> outputs = getOutputNodes();
+
+  // # Initialize the gradients to 0.
+  Eigen::MatrixXd tempGrad_0 = Eigen::MatrixXd::Zero(inputs[0]->getValuesRows(), inputs[0]->getValuesCols());
+  Eigen::MatrixXd tempGrad_1 = Eigen::MatrixXd::Zero(inputs[1]->getValuesRows(), inputs[1]->getValuesCols());
+  Eigen::MatrixXd tempGrad_2 = Eigen::MatrixXd::Zero(inputs[2]->getValuesRows(), inputs[2]->getValuesCols());
+
+  Eigen::MatrixXd gradCost;
+  Eigen::MatrixXd nodeValueTemp;
+  for(auto n : outputs)
+  {
+    // Get gradient of outBound Node w.r.t. current node
+    n->getGradients(this, gradCost);
+
+    inputs[1]->getValues(nodeValueTemp);
+    tempGrad_0 += gradCost * nodeValueTemp.transpose();
+
+    inputs[0]->getValues(nodeValueTemp);
+    tempGrad_1 += nodeValueTemp.transpose() * gradCost;
+
+    tempGrad_2 += gradCost.colwise().sum();
+  }
+  setGradients(inputs[0], tempGrad_0);
+  setGradients(inputs[1], tempGrad_1);
+  setGradients(inputs[2], tempGrad_2);
+}
 
 #endif
