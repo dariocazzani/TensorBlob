@@ -41,6 +41,13 @@ MSE_test : MSE_test.o
 MSE_test.o: MSE_test.cc
 	$(CXX) $(CFLAGS) -c MSE_test.cc -o $(BUILDDIR)MSE_test.o
 
+input_test : input_test.o
+	$(CXX) -o $(TARGET)input_test $(BUILDDIR)input_test.o
+
+input_test.o: input_test.cc
+	$(CXX) $(CFLAGS) -c input_test.cc -o $(BUILDDIR)input_test.o
+
+
 
 clean:
 	rm -rf $(BUILDDIR)*.o $(TARGET)*
