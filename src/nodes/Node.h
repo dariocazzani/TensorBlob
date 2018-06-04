@@ -22,10 +22,12 @@ public:
   void setValues(const Eigen::MatrixXd &values);
   void addInput(Node *input);
   void addOutput(Node *input);
-  void setGradients(Node *n, const Eigen::MatrixXd &grad);
+  void setGradients(const Node *n, const Eigen::MatrixXd &grad);
   void getGradients(const Node *n, Eigen::MatrixXd &grad);
 
   void getValues(Eigen::MatrixXd &values);
+  int getValuesRows();
+  int getValuesCols();
   vector<Eigen::MatrixXd> getInputValues();
   vector<Eigen::MatrixXd> getOutputValues();
   vector<Node *> getOutputNodes();
@@ -59,7 +61,7 @@ void Node::setValues(const Eigen::MatrixXd &values)
   this->values = values;
 }
 
-void Node::setGradients(Node *n, const Eigen::MatrixXd &grad)
+void Node::setGradients(const Node *n, const Eigen::MatrixXd &grad)
 {
   if(n) {
     gradients[n] = grad;
@@ -76,6 +78,15 @@ void Node::getGradients(const Node *n, Eigen::MatrixXd &grad)
 void Node::getValues(Eigen::MatrixXd &values)
 {
   values = this->values;
+}
+
+int Node::getValuesRows()
+{
+  return values.rows();
+}
+int Node::getValuesCols()
+{
+  return values.cols();
 }
 
 vector<Eigen::MatrixXd> Node::getInputValues()
