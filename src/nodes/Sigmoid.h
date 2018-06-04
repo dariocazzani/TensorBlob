@@ -29,6 +29,34 @@ void Sigmoid::forward()
   setValues(inputs);
 }
 
-void Sigmoid::backward() {}
+void Sigmoid::backward()
+{
+  vector<Node *> inputs = getInputNodes();
+  vector<Node *> outputs = getOutputNodes();
+
+  Eigen::MatrixXd currValues;
+  if(outputs.size() == 0)
+  {
+    getValues(currValues);
+    // currValues = currValues * (1 - currValues)
+    currValues = currValues.cwiseProduct(Eigen::MatrixXd::Ones(currValues.rows(), currValues.cols()) - currValues);
+    setGradients(inputs[0], currValues);
+  }
+  else
+  {
+    // # Initialize the gradients to 0.
+    Eigen::MatrixXd tempGrad = Eigen::MatrixXd::Zero(inputs[0]->getValuesRows(), inputs[0]->getValuesCols());
+    Eigen::MatrixXd gradCost;
+    for(auto n : getOutputNodes())
+    {
+      // Get gradient of outBound Node w.r.t. current node
+      n->getGradients(this, gradCost);
+      getValues(currValues);
+      currValues = currValues.cwiseProduct(Eigen::MatrixXd::Ones(currValues.rows(), currValues.cols()) - currValues);
+      tempGrad += currValues.cwiseProduct(gradCost);
+    }
+    setGradients(inputs[0], tempGrad);
+  }
+}
 
 #endif
