@@ -68,8 +68,8 @@ TEST_CASE("Backward propagation for MSE", "[MSE]" ) {
 
   Eigen::MatrixXd gradAct(5,1);
   Eigen::MatrixXd gradLab(5,1);
-  gradAct << -0.32, 0.4, 0.88, -0.52, 0.96;
-  gradLab << 0.32, -0.4, -0.88, 0.52, -0.96;
+  gradLab << -0.32, 0.4, 0.88, -0.52, 0.96;
+  gradAct << 0.32, -0.4, -0.88, 0.52, -0.96;
 
   act.setValues(activations);
   l.setValues(labels);

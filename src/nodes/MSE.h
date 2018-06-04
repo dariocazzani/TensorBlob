@@ -2,7 +2,7 @@
 #define MSE_H
 
 #include "Node.h"
-// NB MSE Has exactly 2 inputs Nodes
+// NB MSE Has exactly 2 inputs Nodes and 0 output Nodes
 class MSE : public Node
 {
 private:
@@ -49,8 +49,8 @@ void MSE::backward()
 {
   Eigen::MatrixXd gradReference;
   Eigen::MatrixXd gradActivations;
-  gradReference = (-2.0f / batchSize) * diff;
-  gradActivations = (2.0f / batchSize) * diff;
+  gradReference = (2.0f / batchSize) * diff;
+  gradActivations = (-2.0f / batchSize) * diff;
 
   vector<Node *> inputs = getInputNodes();
   setGradients(inputs[0], gradActivations);
