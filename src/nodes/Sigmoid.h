@@ -47,7 +47,7 @@ void Sigmoid::backward()
     // # Initialize the gradients to 0.
     Eigen::MatrixXd tempGrad = Eigen::MatrixXd::Zero(inputs[0]->getValuesRows(), inputs[0]->getValuesCols());
     Eigen::MatrixXd gradCost;
-    for(auto n : getOutputNodes())
+    for(auto n : outputs)
     {
       // Get gradient of outBound Node w.r.t. current node
       n->getGradients(this, gradCost);
