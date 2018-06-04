@@ -3,8 +3,8 @@ An implementation of a Computational Graph in C++ for Machine Learning problems
 
 ## TODO
 
-* [ ] Make tests for MSE.h
-* [ ] Make tests for Linear.h
+* [x] Make tests for MSE.h
+* [x] Make tests for Linear.h
 
 ## Instructions
 

@@ -11,11 +11,13 @@ all: build
 	$(TARGET)graph_test
 	$(TARGET)sigmoid_test
 	$(TARGET)MSE_test
+	$(TARGET)linear_test
+	$(TARGET)input_test
 
 first:
 	@echo " Building tests..."
 
-build: node_test graph_test sigmoid_test MSE_test
+build: node_test graph_test sigmoid_test MSE_test linear_test input_test
 
 node_test : node_test.o
 	$(CXX) -o $(TARGET)node_test $(BUILDDIR)node_test.o
