@@ -112,3 +112,108 @@ TEST_CASE("Backward propagation for Linear - 1 hidden layer", "[LINEAR]" ) {
            ((xGrads - gX).norm())
                   < epsilon);
 }
+
+TEST_CASE("Backward propagation for Linear - 2 hidden layers", "[LINEAR]" ) {
+  Input X;
+  Eigen::MatrixXd x_(4,2);
+  x_ << -1.0, -2.0,
+        -1.0, -2.0,
+        -0.5, 1.3,
+        1.2, -0.1;
+
+  Input W1;
+  Eigen::MatrixXd weights1(2,4);
+  weights1 << 2.0, -0.5, 0.1, 0.6,
+              3.0, -1.0, 0.01, -0.8;
+
+  Input b1;
+  Eigen::MatrixXd bias1(1,4);
+  bias1 << -1.0, -0.5, 0.5, 1.1;
+
+  Input W2;
+  Eigen::MatrixXd weights2(4,1);
+  weights2 << 2.0, -0.5, 0.1, 3.0;
+
+  Input b2;
+  Eigen::MatrixXd bias2(1,1);
+  bias2 << -1.0;
+
+  Input y;
+  Eigen::MatrixXd y_(4,1);
+  y_ << 1.0, 2.0, 0.0, -1.0;
+
+  Eigen::MatrixXd xGrads(4,2);
+  xGrads << 0.02979362, -0.02624426,
+            -0.07225851,  0.06365025,
+            0.95089284,  0.16285119,
+            2.0297199 ,  1.92160657;
+
+  Eigen::MatrixXd weightsGrads1(2,4);
+  weightsGrads1 << 0.79345211, -0.21252842,  0.04811693,  0.50783704,
+                   0.22373232, -0.09748136,  0.03678951,  1.03039037;
+
+  Eigen::MatrixXd biasGrads1(1,4);
+  biasGrads1 << 0.98732049, -0.26115161, 0.06506099, 1.37737493;
+
+  Eigen::MatrixXd sigmoidGrad(4,4);
+  sigmoidGrad << 0.2919451 , -0.07298627,  0.01459725,  0.43791765,
+                 -0.7080549 ,  0.17701373, -0.03540275, -1.06208235,
+                 2.03447153, -0.50861788,  0.10172358,  3.0517073,
+                 4.04072319, -1.0101808 ,  0.20203616,  6.06108478;
+
+  Eigen::MatrixXd weightsGrads2(4,1);
+  weightsGrads2 << 2.4006558,
+                   0.5382087,
+                   1.81396245,
+                   2.02001368;
+
+  Eigen::MatrixXd biasGrads2(1,1);
+  biasGrads2 << 2.82954246;
+
+  // GRAPH
+  Linear f1(&X, &W1, &b1);
+  Sigmoid a1(&f1);
+  Linear f2(&a1, &W2, &b2);
+  MSE cost(&f2, &y);
+
+  vector<Node *> graph = {&X, &W1, &b1, &a1, &f1, &f2, &W2, &b2, &y, &cost};
+
+  // FEED_DICT
+  map<Node*, Eigen::MatrixXd> inputMap;
+  inputMap[&X] = x_;
+  inputMap[&W1] = weights1;
+  inputMap[&b1] = bias1;
+  inputMap[&W2] = weights2;
+  inputMap[&b2] = bias2;
+  inputMap[&y] = y_;
+
+  buildGraph(graph, inputMap);
+  vector<Eigen::MatrixXd> results = forwardBackward(graph);
+
+  Eigen::MatrixXd gW1;
+  f1.getGradients(&W1, gW1);
+
+  Eigen::MatrixXd gb1;
+  f1.getGradients(&b1, gb1);
+
+  Eigen::MatrixXd gX;
+  f1.getGradients(&X, gX);
+
+  Eigen::MatrixXd gW2;
+  f2.getGradients(&W2, gW2);
+
+  Eigen::MatrixXd gb2;
+  f2.getGradients(&b2, gb2);
+
+  Eigen::MatrixXd ga1;
+  f2.getGradients(&a1, ga1);
+
+  double epsilon = 1.0e-6;
+  REQUIRE( ((weightsGrads1 - gW1).norm()) +
+           ((biasGrads1 - gb1).norm()) +
+           ((xGrads - gX).norm()) +
+           ((weightsGrads2 - gW2).norm()) +
+           ((biasGrads2 - gb2).norm()) +
+           ((sigmoidGrad - ga1).norm())
+                   < epsilon);
+}
