@@ -16,12 +16,14 @@
 void topologicalSort(vector<Node *> &graph);
 
 /*
+ * Sort graph and then assign inputs values to Input Nodes.
  * inputMap is loosely inspired by TensorFlow feed_dict
- * Run Forward propagation given a computation graph and the values to assign to
- * the inputs
  */
 void buildGraph(vector<Node *> &graph, map<Node*, Eigen::MatrixXd> inputMap);
 
+/*
+ * Run Forward and backward propagation given a computation graph
+ */
 vector<Eigen::MatrixXd> forwardBackward(const vector<Node *> &graph);
 
 
