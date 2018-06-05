@@ -13,11 +13,12 @@ all: build
 	$(TARGET)MSE_test
 	$(TARGET)linear_test
 	$(TARGET)input_test
+	$(TARGET)softmaxXent_test
 
 first:
 	@echo " Building tests..."
 
-build: node_test graph_test sigmoid_test MSE_test linear_test input_test
+build: node_test graph_test sigmoid_test MSE_test linear_test input_test softmaxXent_test
 
 node_test : node_test.o
 	$(CXX) -o $(TARGET)node_test $(BUILDDIR)node_test.o
@@ -55,7 +56,11 @@ linear_test : linear_test.o
 linear_test.o: linear_test.cc
 	$(CXX) $(CFLAGS) -c linear_test.cc -o $(BUILDDIR)linear_test.o
 
+softmaxXent_test : softmaxXent_test.o
+	$(CXX) -o $(TARGET)softmaxXent_test $(BUILDDIR)softmaxXent_test.o
 
+softmaxXent_test.o: softmaxXent_test.cc
+	$(CXX) $(CFLAGS) -c softmaxXent_test.cc -o $(BUILDDIR)softmaxXent_test.o
 clean:
 	rm -rf $(BUILDDIR)*.o $(TARGET)*
 
