@@ -1,18 +1,16 @@
 #include "mnist/mnistUtils.h"
-
 #include <iostream>
 
 using namespace std;
 
 int main(int argc, char **argv)
 {
-  vector<pair<vector<double>, unsigned int> > train_data;
-	vector<pair<vector<double>, unsigned int> > valid_data;
-	getData(train_data, valid_data);
+  Eigen::MatrixXd trainData(TRAIN_SIZE, IMG_SIZE*IMG_SIZE);
+  Eigen::MatrixXd validData(VALID_SIZE, IMG_SIZE*IMG_SIZE);
+  Eigen::MatrixXd trainLabels(TRAIN_SIZE, NUM_CLASSES);
+  Eigen::MatrixXd validLabels(VALID_SIZE, NUM_CLASSES);
 
-  for(auto sample : train_data)
-  {
-    cout<<sample.first.size()<<endl;
-  }
+	getData(trainData, validData, trainLabels, validLabels);
+  cout<<validLabels<<endl;
   return 0;
 }
