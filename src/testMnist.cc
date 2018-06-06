@@ -10,7 +10,7 @@ int main(int argc, char **argv)
   Eigen::MatrixXd trainLabels(TRAIN_SIZE, NUM_CLASSES);
   Eigen::MatrixXd validLabels(VALID_SIZE, NUM_CLASSES);
 
-	getData(trainData, validData, trainLabels, validLabels);
+  getData(trainData, validData, trainLabels, validLabels);
   cout<<validLabels<<endl;
   return 0;
 }
