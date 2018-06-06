@@ -4,7 +4,6 @@
 #include "../../include/Eigen/Dense"
 
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
@@ -16,15 +15,15 @@ const int IMG_SIZE = 28;
 
 void toOneHot(const unsigned int &label, Eigen::VectorXd &oneHot);
 
+void getData(Eigen::MatrixXd &trainData, Eigen::MatrixXd &validData,
+	Eigen::MatrixXd &trainLabels, Eigen::MatrixXd &validLabels);
+
 void toOneHot(const unsigned int &label, Eigen::VectorXd &oneHot)
 {
 	Eigen::VectorXd tmp = Eigen::VectorXd::Zero(NUM_CLASSES);
 	oneHot = tmp;
 	oneHot(label) = 1.0f;
 }
-
-void getData(Eigen::MatrixXd &trainData, Eigen::MatrixXd &validData,
-	Eigen::MatrixXd &trainLabels, Eigen::MatrixXd &validLabels);
 
 void getData(Eigen::MatrixXd &trainData, Eigen::MatrixXd &validData,
 	Eigen::MatrixXd &trainLabels, Eigen::MatrixXd &validLabels)
