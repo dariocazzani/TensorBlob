@@ -5,6 +5,7 @@ An implementation of a Computational Graph in C++ for Machine Learning problems
 
 * [x] Make tests for MSE.h
 * [x] Make tests for Linear.h
+* [ ] Make path to mnist independent from where main is called from 
 
 ## Instructions
 
