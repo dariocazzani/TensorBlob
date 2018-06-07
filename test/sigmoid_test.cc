@@ -32,7 +32,7 @@ TEST_CASE("Forward propagation for Sigmoid", "[SIGMOID]" ) {
 TEST_CASE("Backward propagation for Sigmoid with no output", "[SIGMOID]" ) {
   Node n;
   Eigen::MatrixXd inputs(5, 2);
-  inputs << -1.0, 0.5, -0.6, 0.9, -1.5, 
+  inputs << -1.0, 0.5, -0.6, 0.9, -1.5,
             -1.0, 0.5, -0.6, 0.9, -1.5;
 
   Eigen::MatrixXd refValue(5,2);
@@ -71,7 +71,8 @@ TEST_CASE("Backward propagation for Sigmoid with 1 output", "[SIGMOID]" ) {
   Eigen::MatrixXd refValue(5,1);
   refValue << 0.09979561, 0.01151136, 0.08733552, -0.01553997, 0.10037112;
 
-  buildGraph(graph, inputMap);
+  buildGraph(graph);
+  feedValues(inputMap);
   vector<Eigen::MatrixXd> results = forwardBackward(graph);
 
   Eigen::MatrixXd g;

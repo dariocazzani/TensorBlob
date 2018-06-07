@@ -94,7 +94,8 @@ TEST_CASE("Backward propagation for Linear - 1 hidden layer", "[LINEAR]" ) {
   inputMap[&b] = bias;
   inputMap[&y] = y_;
 
-  buildGraph(graph, inputMap);
+  buildGraph(graph);
+  feedValues(inputMap);
   vector<Eigen::MatrixXd> results = forwardBackward(graph);
 
   Eigen::MatrixXd gW;
@@ -187,7 +188,8 @@ TEST_CASE("Backward propagation for Linear - 2 hidden layers", "[LINEAR]" ) {
   inputMap[&b2] = bias2;
   inputMap[&y] = y_;
 
-  buildGraph(graph, inputMap);
+  buildGraph(graph);
+  feedValues(inputMap);
   vector<Eigen::MatrixXd> results = forwardBackward(graph);
 
   Eigen::MatrixXd gW1;

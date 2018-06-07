@@ -6,10 +6,12 @@
 #include "nodes/SoftXent.h"
 #include "graph/graph_utils.h"
 #include "mnist/mnistUtils.h"
+#include "optimizers/SGD.h"
 
 const int NUM_HIDDEN = 128;
-const int BATCH_SIZE = 16;
+const int BATCH_SIZE = 256;
 const int NUM_EPOCHS = 100;
+const double LEARNING_RATE = 1e-2;
 
 void getBatch(const Eigen::MatrixXd &data, const Eigen::MatrixXd &labels,
              Eigen::MatrixXd &dataBatch, Eigen::MatrixXd &datalabels);
@@ -38,7 +40,6 @@ int main()
 
   Eigen::MatrixXd bias2 = Eigen::MatrixXd::Random(1, NUM_CLASSES);
 
-
   // DEFINE NODES AND CONNECT THEM
   Input W1;
   Input b1;
@@ -54,23 +55,31 @@ int main()
   SoftXent cost(&out, &Y);
 
   vector<Node *> graph = {&hidden1, &W1, &b1, &W2, &b2, &X, &outHidden1, &out, &Y, &cost};
+  vector<Node *> trainables = {&W1, &b1, &W2, &b2};
+
+  // FEED_DICT
+  map<Node*, Eigen::MatrixXd> inputMap;
+  W1.setValues(weights1);
+  b1.setValues(bias1);
+  W2.setValues(weights2);
+  b2.setValues(bias2);
+  // inputMap[&W1] = weights1;
+  // inputMap[&b1] = bias1;
+  // inputMap[&W2] = weights2;
+  // inputMap[&b2] = bias2;
+
+  buildGraph(graph);
 
   for(size_t i=0; i<NUM_EPOCHS; ++i)
   {
     getBatch(trainData, trainLabels, inputs, labels);
-
-    // FEED_DICT
-    map<Node*, Eigen::MatrixXd> inputMap;
-    inputMap[&W1] = weights1;
-    inputMap[&b1] = bias1;
-    inputMap[&W2] = weights2;
-    inputMap[&b2] = bias2;
     inputMap[&X] = inputs;
     inputMap[&Y] = labels;
 
-    buildGraph(graph, inputMap);
+    feedValues(inputMap);
 
     vector<Eigen::MatrixXd> results = forwardBackward(graph);
+    SGD(trainables, LEARNING_RATE);
 
     cout<<"Cost: "<<cost.getValues()<<endl;
   }

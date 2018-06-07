@@ -26,24 +26,11 @@ void buildGraph(vector<Node *> &graph, map<Node*, Eigen::MatrixXd> inputMap);
  */
 vector<Eigen::MatrixXd> forwardBackward(const vector<Node *> &graph);
 
+void feedValues(map<Node*, Eigen::MatrixXd> inputMap);
 
-
-void buildGraph(vector<Node *> & graph, map<Node*, Eigen::MatrixXd> inputMap)
+void buildGraph(vector<Node *> & graph)
 {
   topologicalSort(graph);
-
-  // Assign the desired values to the inputs
-  map<Node*, Eigen::MatrixXd>::iterator it = inputMap.begin();
-  while(it != inputMap.end()){
-    // Verify that we were given only Input nodes to assign values to
-    if(Input* b1 = dynamic_cast<Input*> (it->first)){
-      it->first->setValues(it->second);
-    }
-    else{
-      throw("Invalid Input type.");
-    }
-    ++it;
-  }
 }
 
 void topologicalSort(vector<Node *> &graph)
@@ -133,6 +120,22 @@ vector<Eigen::MatrixXd> forwardBackward(const vector<Node *> &graph)
     }
   }
   return results;
+}
+
+void feedValues(map<Node*, Eigen::MatrixXd> inputMap)
+{
+  // Assign the desired values to the inputs
+  map<Node*, Eigen::MatrixXd>::iterator it = inputMap.begin();
+  while(it != inputMap.end()){
+    // Verify that we were given only Input nodes to assign values to
+    if(Input* b1 = dynamic_cast<Input*> (it->first)){
+      it->first->setValues(it->second);
+    }
+    else{
+      throw("Invalid Input type.");
+    }
+    ++it;
+  }
 }
 
 #endif
