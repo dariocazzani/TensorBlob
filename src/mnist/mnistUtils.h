@@ -32,8 +32,8 @@ void getMnistData(Eigen::MatrixXd &trainData, Eigen::MatrixXd &validData,
 	unsigned int cnt;
 	int ret;
 
-	const char *trainImagesPath = "../data/train-images-idx3-ubyte";
-	const char *trainLabelsPath = "../data/train-labels-idx1-ubyte";
+	const char *trainImagesPath = "data/train-images-idx3-ubyte";
+	const char *trainLabelsPath = "data/train-labels-idx1-ubyte";
 
 	if ((ret = mnist_load(trainImagesPath, trainLabelsPath, &data, &cnt)))
 	{
