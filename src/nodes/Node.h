@@ -25,6 +25,7 @@ public:
   void getGradients(const Node *n, Eigen::MatrixXd &grad);
 
   void getValues(Eigen::MatrixXd &values);
+  Eigen::MatrixXd getValues();
   int getValuesRows();
   int getValuesCols();
   vector<Eigen::MatrixXd> getInputValues();
@@ -77,6 +78,11 @@ void Node::getGradients(const Node *n, Eigen::MatrixXd &grad)
 void Node::getValues(Eigen::MatrixXd &values)
 {
   values = this->values;
+}
+
+Eigen::MatrixXd Node::getValues()
+{
+  return this->values;
 }
 
 int Node::getValuesRows()
