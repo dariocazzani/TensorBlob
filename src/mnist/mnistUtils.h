@@ -15,7 +15,7 @@ const int IMG_SIZE = 28;
 
 void toOneHot(const unsigned int &label, Eigen::VectorXd &oneHot);
 
-void getData(Eigen::MatrixXd &trainData, Eigen::MatrixXd &validData,
+void getMnistData(Eigen::MatrixXd &trainData, Eigen::MatrixXd &validData,
 	Eigen::MatrixXd &trainLabels, Eigen::MatrixXd &validLabels);
 
 void toOneHot(const unsigned int &label, Eigen::VectorXd &oneHot)
@@ -25,7 +25,7 @@ void toOneHot(const unsigned int &label, Eigen::VectorXd &oneHot)
 	oneHot(label) = 1.0f;
 }
 
-void getData(Eigen::MatrixXd &trainData, Eigen::MatrixXd &validData,
+void getMnistData(Eigen::MatrixXd &trainData, Eigen::MatrixXd &validData,
 	Eigen::MatrixXd &trainLabels, Eigen::MatrixXd &validLabels)
 {
 	mnist_data *data;
