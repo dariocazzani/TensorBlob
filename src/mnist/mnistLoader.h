@@ -83,7 +83,7 @@ _STATIC int mnist_load(
 	unsigned int *count)
 {
 	int return_code = 0;
-	int i;
+	unsigned int i;
 	char tmp[4];
 
 	unsigned int image_cnt, label_cnt;
