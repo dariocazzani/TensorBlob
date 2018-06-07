@@ -93,6 +93,10 @@ void SoftXent::backward()
 
   gradientLogits = (probabilities.array() - labels.array()) / batchSize;
   setGradients(getInputNodes()[0], gradientLogits);
+  // Gradients for labels are useless, but included for compatibility with
+  // the fact that labels are of type Input (which can perform backward prop)
+  // In reality these gradients will be ignored
+  setGradients(getInputNodes()[1], gradientLogits);
 }
 
 #endif
