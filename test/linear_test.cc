@@ -6,10 +6,11 @@
 #include "../src/nodes/MSE.h"
 #include "../src/nodes/Linear.h"
 #include "../src/nodes/Input.h"
+#include "../src/nodes/Variable.h"
 #include "../src/graph/graph_utils.h"
 
 TEST_CASE("Forward propagation for Linear", "[LINEAR]" ) {
-  Input W;
+  Variable W;
   Eigen::MatrixXd weights(3,3);
   weights << 0.0, 0.1, 0.2,
              0.3, 0.4, 0.5,
@@ -23,7 +24,7 @@ TEST_CASE("Forward propagation for Linear", "[LINEAR]" ) {
         0.6, 0.7, 0.8,
         0.0, 0.1, 0.2;
 
-  Input b;
+  Variable b;
   Eigen::MatrixXd bias(1,3);
   bias << 0.3, 0.4, 0.5;
 
@@ -58,11 +59,11 @@ TEST_CASE("Backward propagation for Linear - 1 hidden layer", "[LINEAR]" ) {
   x_ << -1.0, -2.0,
         -1.0, -2.0;
 
-  Input W;
+  Variable W;
   Eigen::MatrixXd weights(2,1);
   weights << 2.0, 3.0;
 
-  Input b;
+  Variable b;
   Eigen::MatrixXd bias(1,1);
   bias << -3.0;
 
@@ -80,6 +81,9 @@ TEST_CASE("Backward propagation for Linear - 1 hidden layer", "[LINEAR]" ) {
   Eigen::MatrixXd biasGrads(1,1);
   biasGrads << -5.01028709e-05;
 
+  W.setValues(weights);
+  b.setValues(bias);
+
   // GRAPH
   Linear f(&X, &W, &b);
   Sigmoid a(&f);
@@ -89,14 +93,12 @@ TEST_CASE("Backward propagation for Linear - 1 hidden layer", "[LINEAR]" ) {
 
   // FEED_DICT
   map<Node*, Eigen::MatrixXd> inputMap;
-  inputMap[&W] = weights;
   inputMap[&X] = x_;
-  inputMap[&b] = bias;
   inputMap[&y] = y_;
 
   buildGraph(graph);
   feedValues(inputMap);
-  vector<Eigen::MatrixXd> results = forwardBackward(graph);
+  forwardBackward(graph);
 
   Eigen::MatrixXd gW;
   f.getGradients(&W, gW);
@@ -190,7 +192,7 @@ TEST_CASE("Backward propagation for Linear - 2 hidden layers", "[LINEAR]" ) {
 
   buildGraph(graph);
   feedValues(inputMap);
-  vector<Eigen::MatrixXd> results = forwardBackward(graph);
+  forwardBackward(graph);
 
   Eigen::MatrixXd gW1;
   f1.getGradients(&W1, gW1);

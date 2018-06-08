@@ -26,19 +26,6 @@ Input::Input(const Eigen::MatrixXd &values)
 
 
 void Input::forward() {}
-void Input::backward()
-{
-  vector<Node *> outputs = getOutputNodes();
-  // # Initialize the gradients to 0.
-  Eigen::MatrixXd tempGrad = Eigen::MatrixXd::Zero(this->getValuesRows(), this->getValuesCols());
-  Eigen::MatrixXd gradCost;
-  for(auto n : outputs)
-  {
-    // Get gradient of outBound Node w.r.t. current node
-    n->getGradients(this, gradCost);
-    tempGrad += gradCost;
-  }
-  setGradients(this, tempGrad);
-}
+void Input::backward() {}
 
 #endif

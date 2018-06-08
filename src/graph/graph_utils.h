@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include "DAGException.h"
 #include "../nodes/Input.h"
+#include "../nodes/Variable.h"
 #include <boost/range/adaptor/reversed.hpp>
 
 
@@ -22,6 +23,9 @@ void forward(const vector<Node *> &graph);
 void forwardBackward(const vector<Node *> &graph);
 
 void feedValues(map<Node*, Eigen::MatrixXd> inputMap);
+
+void initTrainables(vector<Node *> &trainables);
+
 
 void buildGraph(vector<Node *> & graph)
 {
@@ -121,9 +125,24 @@ void feedValues(map<Node*, Eigen::MatrixXd> inputMap)
       it->first->setValues(it->second);
     }
     else{
-      throw("Invalid Input type.");
+      throw invalid_argument("Invalid Input type.");
     }
     ++it;
+  }
+}
+
+void initTrainables(vector<Node *> &trainables)
+{
+  for(auto n : trainables)
+  {
+    // Verify that we were given only Variable nodes
+    if(Variable* b1 = dynamic_cast<Variable*> (n)) {;}
+    else
+    {
+      throw invalid_argument("Invalid Node type.");
+    }
+    Eigen::MatrixXd tempValues = Eigen::MatrixXd::Random(n->getValuesRows(), n->getValuesCols());
+    n->setValues(tempValues);
   }
 }
 

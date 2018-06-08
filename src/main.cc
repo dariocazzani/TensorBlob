@@ -1,6 +1,7 @@
 #include "nodes/Node.h"
 #include "nodes/Linear.h"
 #include "nodes/Input.h"
+#include "nodes/Variable.h"
 #include "nodes/Sigmoid.h"
 #include "nodes/MSE.h"
 #include "nodes/SoftXent.h"
@@ -36,24 +37,23 @@ int main()
 
   getMnistData(trainData, validData, trainLabels, validLabels);
 
-  Eigen::MatrixXd weights1 = Eigen::MatrixXd::Random(IMG_SIZE*IMG_SIZE, NUM_HIDDEN);
-  Eigen::MatrixXd bias1 = Eigen::MatrixXd::Random(1, NUM_HIDDEN);
-  Eigen::MatrixXd weights2 = Eigen::MatrixXd::Random(NUM_HIDDEN, NUM_CLASSES);
-  Eigen::MatrixXd bias2 = Eigen::MatrixXd::Random(1, NUM_CLASSES);
+  // VARIABLES
+  Eigen::MatrixXd weights1(IMG_SIZE*IMG_SIZE, NUM_HIDDEN);
+  Eigen::MatrixXd bias1(1, NUM_HIDDEN);
+  Eigen::MatrixXd weights2(NUM_HIDDEN, NUM_CLASSES);
+  Eigen::MatrixXd bias2(1, NUM_CLASSES);
 
   // DEFINE NODES
-  Input W1;
-  Input b1;
-  Input W2;
-  Input b2;
+  Variable W1(weights1);
+  Variable b1(bias1);
+  Variable W2(weights2);
+  Variable b2(bias2);
   Input X;
   Input Y;
 
-  // Initialize Trainable Variables
-  W1.setValues(weights1);
-  b1.setValues(bias1);
-  W2.setValues(weights2);
-  b2.setValues(bias2);
+  // TRAINABLES AND INIT
+  vector<Node *> trainables = {&W1, &b1, &W2, &b2};
+  initTrainables(trainables);
 
   // BUILD GRAPH
   Linear hidden1(&X, &W1, &b1);
@@ -63,8 +63,6 @@ int main()
 
   // Connect all nodes to graph and define vector of trainable variables
   vector<Node *> graph = {&hidden1, &W1, &b1, &W2, &b2, &X, &outHidden1, &out, &Y, &cost};
-  vector<Node *> trainables = {&W1, &b1, &W2, &b2};
-
   buildGraph(graph);
 
   // Train Batch
@@ -116,7 +114,7 @@ int main()
       cout<<setprecision(5)<<" - Validation accuracy: "<<validAccuracy*100<<"% "<<endl<<endl;
     }
   }
-  
+
   cout<<"*********\nFinal Results: "<<endl;
   cout<<setprecision(5)<<"Training cost:   "<<trainCost;
   cout<<setprecision(5)<<" - Training accuracy:   "<<trainAccuracy*100<<"% "<<endl;

@@ -73,7 +73,7 @@ TEST_CASE("Backward propagation for Sigmoid with 1 output", "[SIGMOID]" ) {
 
   buildGraph(graph);
   feedValues(inputMap);
-  vector<Eigen::MatrixXd> results = forwardBackward(graph);
+  forwardBackward(graph);
 
   Eigen::MatrixXd g;
   s.getGradients(&x, g);

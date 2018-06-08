@@ -3,12 +3,12 @@
 #include "../include/Eigen/Dense"
 
 #include "../src/nodes/Sigmoid.h"
-#include "../src/nodes/Input.h"
+#include "../src/nodes/Variable.h"
 #include "../src/nodes/MSE.h"
 #include "../src/graph/graph_utils.h"
 
 TEST_CASE("Backward propagation for Input with no output", "[INPUT]" ) {
-  Input in;
+  Variable in;
   Eigen::MatrixXd inputs = Eigen::MatrixXd::Random(2,3);
   in.setValues(inputs);
 
@@ -24,7 +24,7 @@ TEST_CASE("Backward propagation for Input with no output", "[INPUT]" ) {
 }
 
 TEST_CASE("Backward propagation for Input with 1 output", "[INPUT]" ) {
-  Input x;
+  Variable x;
   Sigmoid s(&x);
 
   Eigen::MatrixXd x_(5, 1);
@@ -32,16 +32,13 @@ TEST_CASE("Backward propagation for Input with 1 output", "[INPUT]" ) {
 
   vector<Node *> graph = {&x, &s};
 
-  // FEED_DICT
-  map<Node*, Eigen::MatrixXd> inputMap;
-  inputMap[&x] = x_;
+  x.setValues(x_);
 
   Eigen::MatrixXd refValue(5,1);
   refValue << 0.19661193, 0.235003716, 0.2287842, 0.20550031, 0.14914645;
 
   buildGraph(graph);
-  feedValues(inputMap);
-  vector<Eigen::MatrixXd> results = forwardBackward(graph);
+  forwardBackward(graph);
 
   Eigen::MatrixXd g;
   x.getGradients(&x, g);
@@ -51,7 +48,7 @@ TEST_CASE("Backward propagation for Input with 1 output", "[INPUT]" ) {
 
 
 TEST_CASE("Backward propagation for Input with 2 outputs", "[INPUT]" ) {
-  Input x;
+  Variable x;
   Sigmoid s(&x);
   MSE cost(&s, &x);
 
@@ -60,16 +57,13 @@ TEST_CASE("Backward propagation for Input with 2 outputs", "[INPUT]" ) {
 
   vector<Node *> graph = {&x, &s, &cost};
 
-  // FEED_DICT
-  map<Node*, Eigen::MatrixXd> inputMap;
-  inputMap[&x] = x_;
+  x.setValues(x_);
 
   Eigen::MatrixXd refValue(5,1);
   refValue << -0.40778096, -0.03747237, -0.29440196, 0.06008022, -0.57259909;
 
   buildGraph(graph);
-  feedValues(inputMap);
-  vector<Eigen::MatrixXd> results = forwardBackward(graph);
+  forwardBackward(graph);
 
   Eigen::MatrixXd g;
   x.getGradients(&x, g);
