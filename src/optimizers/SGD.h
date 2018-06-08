@@ -10,6 +10,10 @@ using namespace std;
 
 void SGD(vector<Node *> &trainables, const double &learningRate)
 {
+  if(learningRate <= 0.0f)
+  {
+    throw std::invalid_argument("Learning rate should be a positive number.");
+  }
   Eigen::MatrixXd gradTemp;
   Eigen::MatrixXd tempValues;
   for(auto n : trainables)
