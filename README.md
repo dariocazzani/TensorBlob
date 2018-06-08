@@ -69,9 +69,23 @@ make all && bin/main
     Linear out(&outHidden1, &W2, &b2);
     SoftXent cost(&out, &Y);
 
-    // Connect all nodes to graph and define vector of trainable variables
     vector<Node *> graph = {&hidden1, &W1, &b1, &W2, &b2, &X, &outHidden1, &out, &Y, &cost};
     buildGraph(graph);
+    ```
+    
+* **Example of forward pass, backward pass and SGD update**
+    ```C++
+    //Define a std::map object to feed values to the Network Inputs
+    map<Node*, Eigen::MatrixXd> inputMap;
+
+    getBatch(trainData, trainLabels, trainDataBatch, trainLabelBatch);
+    inputMap[&X] = trainDataBatch;
+    inputMap[&Y] = trainLabelBatch;
+    feedValues(inputMap);
+    forwardBackward(graph);
+    SGD(trainables, LEARNING_RATE);
+    trainCost = cost.getValues();
+    trainAccuracy = getAccuracy(argMax(trainLabelBatch), argMax(cost.getProbabilities()));
     ```
     
 ## TODO
