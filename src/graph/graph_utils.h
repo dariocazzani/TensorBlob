@@ -15,6 +15,7 @@
  */
 void topologicalSort(vector<Node *> &graph);
 
+void forward(const vector<Node *> &graph);
 /*
  * Run Forward and backward propagation given a computation graph
  */
@@ -93,13 +94,17 @@ https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
   temp.swap(graph);
 }
 
-
-void forwardBackward(const vector<Node *> &graph)
+void forward(const vector<Node *> &graph)
 {
-  vector<Eigen::MatrixXd> results;
   for(auto n : graph){
     n->forward();
   }
+}
+
+
+void forwardBackward(const vector<Node *> &graph)
+{
+  forward(graph);
 
   for (auto n : boost::adaptors::reverse(graph)) {
     n->backward();

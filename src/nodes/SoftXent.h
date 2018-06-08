@@ -18,6 +18,8 @@ public:
 
   void forward();
   void backward();
+
+  Eigen::MatrixXd getProbabilities();
 };
 
 SoftXent::SoftXent(Node *logits, Node *labels)
@@ -99,4 +101,8 @@ void SoftXent::backward()
   setGradients(getInputNodes()[1], gradientLogits);
 }
 
+Eigen::MatrixXd SoftXent::getProbabilities()
+{
+  return probabilities;
+}
 #endif
