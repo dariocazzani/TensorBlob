@@ -7,7 +7,7 @@
 
 ## Instructions
 
-#### Download MNIST dataset
+### Download MNIST dataset
 ```bash
 mkdir -p data
 wget -t 45 http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz -q --show-progress
@@ -18,14 +18,38 @@ gunzip -c train-labels-idx1-ubyte.gz > data/train-labels-idx1-ubyte
 rm train-images-idx3-ubyte.gz train-labels-idx1-ubyte.gz
 ```
 
-#### Build, run tests and execute main
+### Build, run tests and execute main
 ```bash
 make all && bin/main
 ```
 
+Results that will be displayed:
+
+        ...
+        *********
+        Iteration: 201
+        Training cost:   1.5912 - Training accuracy:   48.438% 
+        Validation cost: 1.313 - Validation accuracy: 61.719% 
+
+        *********
+        Iteration: 301
+        Training cost:   1.1929 - Training accuracy:   66.797% 
+        Validation cost: 1.1285 - Validation accuracy: 67.969% 
+
+        *********
+        Iteration: 401
+        Training cost:   0.92881 - Training accuracy:   73.828% 
+        Validation cost: 1.1156 - Validation accuracy: 70.312% 
+
+        *********
+        Iteration: 501
+        Training cost:   0.87063 - Training accuracy:   75.391% 
+        Validation cost: 0.7792 - Validation accuracy: 76.172% 
+        ...
+
 ### Build your own Neural Net for MNIST
 
-#### Refer to the [complete example](https://github.com/dariocazzani/TensorBlob/blob/master/src/main.cc)
+##### Refer to the [complete example](https://github.com/dariocazzani/TensorBlob/blob/master/src/main.cc)
 
 * **Load data into train and validation Matrices**
     ```C++
