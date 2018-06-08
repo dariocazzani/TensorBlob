@@ -61,7 +61,7 @@ int main()
   Linear out(&outHidden1, &W2, &b2);
   SoftXent cost(&out, &Y);
 
-  // Connect all nodes to graph and define vector of trainable variables
+  // Connect all nodes to the graph and call buildGraph method
   vector<Node *> graph = {&hidden1, &W1, &b1, &W2, &b2, &X, &outHidden1, &out, &Y, &cost};
   buildGraph(graph);
 
