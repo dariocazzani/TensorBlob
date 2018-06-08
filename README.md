@@ -25,6 +25,8 @@ make all && bin/main
 
 ### Build your own Neural Net for MNIST
 
+#### Refer to the [complete example](https://github.com/dariocazzani/TensorBlob/blob/master/src/main.cc)
+
 * **Load data into train and validation Matrices**
     ```C++
     ...
