@@ -16,15 +16,9 @@
 void topologicalSort(vector<Node *> &graph);
 
 /*
- * Sort graph and then assign inputs values to Input Nodes.
- * inputMap is loosely inspired by TensorFlow feed_dict
- */
-void buildGraph(vector<Node *> &graph, map<Node*, Eigen::MatrixXd> inputMap);
-
-/*
  * Run Forward and backward propagation given a computation graph
  */
-vector<Eigen::MatrixXd> forwardBackward(const vector<Node *> &graph);
+void forwardBackward(const vector<Node *> &graph);
 
 void feedValues(map<Node*, Eigen::MatrixXd> inputMap);
 
@@ -100,7 +94,7 @@ https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
 }
 
 
-vector<Eigen::MatrixXd> forwardBackward(const vector<Node *> &graph)
+void forwardBackward(const vector<Node *> &graph)
 {
   vector<Eigen::MatrixXd> results;
   for(auto n : graph){
@@ -110,16 +104,6 @@ vector<Eigen::MatrixXd> forwardBackward(const vector<Node *> &graph)
   for (auto n : boost::adaptors::reverse(graph)) {
     n->backward();
   }
-
-  // Find output nodes
-  Eigen::MatrixXd temp;
-  for(auto n : graph){
-    if(n->getOutputNodes().size() == 0){
-      n->getValues(temp);
-      results.push_back(temp);
-    }
-  }
-  return results;
 }
 
 void feedValues(map<Node*, Eigen::MatrixXd> inputMap)

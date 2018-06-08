@@ -78,7 +78,7 @@ int main()
 
     feedValues(inputMap);
 
-    vector<Eigen::MatrixXd> results = forwardBackward(graph);
+    forwardBackward(graph);
     SGD(trainables, LEARNING_RATE);
 
     cout<<"Cost: "<<cost.getValues()<<endl;
