@@ -11,6 +11,7 @@ public:
   Input(const Eigen::MatrixXd &values);
   void forward();
   void backward();
+  void getGradients(const Node *n, Eigen::MatrixXd &grad);
 };
 
 Input::Input() {}
@@ -24,21 +25,14 @@ Input::Input(const Eigen::MatrixXd &values)
   setValues(values);
 }
 
-
 void Input::forward() {}
-void Input::backward()
-{
-  vector<Node *> outputs = getOutputNodes();
-  // # Initialize the gradients to 0.
-  Eigen::MatrixXd tempGrad = Eigen::MatrixXd::Zero(this->getValuesRows(), this->getValuesCols());
-  Eigen::MatrixXd gradCost;
-  for(auto n : outputs)
-  {
-    // Get gradient of outBound Node w.r.t. current node
-    n->getGradients(this, gradCost);
-    tempGrad += gradCost;
-  }
-  setGradients(this, tempGrad);
-}
+// Input nodes can't be updated
+void Input::backward() {}
 
+void Input::getGradients(const Node *n, Eigen::MatrixXd &grad)
+{
+  (void) n;
+  (void) grad;
+  throw domain_error("Gradients not defined for Nodes of type Input.");
+}
 #endif

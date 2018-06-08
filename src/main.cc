@@ -1,5 +1,6 @@
 #include "nodes/Node.h"
 #include "nodes/Linear.h"
+#include "nodes/Variable.h"
 #include "nodes/Input.h"
 #include "nodes/Sigmoid.h"
 #include "nodes/MSE.h"
@@ -41,10 +42,10 @@ int main()
   Eigen::MatrixXd bias2 = Eigen::MatrixXd::Random(1, NUM_CLASSES);
 
   // DEFINE NODES AND CONNECT THEM
-  Input W1;
-  Input b1;
-  Input W2;
-  Input b2;
+  Variable W1;
+  Variable b1;
+  Variable W2;
+  Variable b2;
   Input X;
   Input Y;
 
@@ -63,10 +64,6 @@ int main()
   b1.setValues(bias1);
   W2.setValues(weights2);
   b2.setValues(bias2);
-  // inputMap[&W1] = weights1;
-  // inputMap[&b1] = bias1;
-  // inputMap[&W2] = weights2;
-  // inputMap[&b2] = bias2;
 
   buildGraph(graph);
 
