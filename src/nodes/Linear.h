@@ -81,10 +81,6 @@ void Linear::forward()
 
   validateInputs(inputs, weights, bias);
 
-  // cout<<"bias: "<<bias.rows()<<"x"<<bias.cols()<<endl;
-  // cout<<"weights: "<<weights.rows()<<"x"<<weights.cols()<<endl;
-  // cout<<"inputs: "<<inputs.rows()<<"x"<<inputs.cols()<<endl;
-
   // Map bias to Vector for dynamic broadcasting
   Eigen::Map<Eigen::VectorXd> biasFlat(bias.data(), bias.size());
 

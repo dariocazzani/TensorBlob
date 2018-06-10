@@ -110,10 +110,9 @@ TEST_CASE("Backward propagation for Linear - 1 hidden layer", "[LINEAR]" ) {
   f.getGradients(&X, gX);
 
   double epsilon = 1.0e-7;
-  REQUIRE( ((weightsGrads - gW).norm()) +
-           ((biasGrads - gb).norm()) +
-           ((xGrads - gX).norm())
-                  < epsilon);
+  REQUIRE((weightsGrads - gW).norm() < epsilon);
+  REQUIRE((biasGrads - gb).norm() < epsilon);
+  REQUIRE((xGrads - gX).norm() < epsilon);
 }
 
 TEST_CASE("Backward propagation for Linear - 2 hidden layers", "[LINEAR]" ) {
@@ -212,12 +211,11 @@ TEST_CASE("Backward propagation for Linear - 2 hidden layers", "[LINEAR]" ) {
   Eigen::MatrixXd ga1;
   f2.getGradients(&a1, ga1);
 
-  double epsilon = 1.0e-6;
-  REQUIRE( ((weightsGrads1 - gW1).norm()) +
-           ((biasGrads1 - gb1).norm()) +
-           ((xGrads - gX).norm()) +
-           ((weightsGrads2 - gW2).norm()) +
-           ((biasGrads2 - gb2).norm()) +
-           ((sigmoidGrad - ga1).norm())
-                   < epsilon);
+  double epsilon = 1.0e-7;
+  REQUIRE((weightsGrads1 - gW1).norm() < epsilon);
+  REQUIRE((biasGrads1 - gb1).norm() < epsilon);
+  REQUIRE((xGrads - gX).norm() < epsilon);
+  REQUIRE((weightsGrads2 - gW2).norm() < epsilon);
+  REQUIRE((biasGrads2 - gb2).norm() < epsilon);
+  REQUIRE((sigmoidGrad - ga1).norm() < epsilon);
 }

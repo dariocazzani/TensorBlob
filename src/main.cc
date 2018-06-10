@@ -13,7 +13,7 @@
 
 const int NUM_HIDDEN = 32;
 const int BATCH_SIZE = 256;
-const int NUM_EPOCHS = 4;
+const int NUM_EPOCHS = 10;
 constexpr int NUM_ITERATIONS = (TRAIN_SIZE / BATCH_SIZE + 1) * NUM_EPOCHS;
 const double LEARNING_RATE = 1e-1;
 

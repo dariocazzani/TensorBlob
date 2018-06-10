@@ -24,7 +24,6 @@ Input::Input(const Eigen::MatrixXd &values)
   setValues(values);
 }
 
-
 void Input::forward() {}
 void Input::backward() {}
 

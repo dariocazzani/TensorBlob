@@ -28,23 +28,23 @@ Results that will be displayed:
         ...
         *********
         Iteration: 201
-        Training cost:   1.5912 - Training accuracy:   48.438% 
-        Validation cost: 1.313 - Validation accuracy: 61.719% 
+        Training cost:   1.5912 - Training accuracy:   48.438%
+        Validation cost: 1.313 - Validation accuracy: 61.719%
 
         *********
         Iteration: 301
-        Training cost:   1.1929 - Training accuracy:   66.797% 
-        Validation cost: 1.1285 - Validation accuracy: 67.969% 
+        Training cost:   1.1929 - Training accuracy:   66.797%
+        Validation cost: 1.1285 - Validation accuracy: 67.969%
 
         *********
         Iteration: 401
-        Training cost:   0.92881 - Training accuracy:   73.828% 
-        Validation cost: 1.1156 - Validation accuracy: 70.312% 
+        Training cost:   0.92881 - Training accuracy:   73.828%
+        Validation cost: 1.1156 - Validation accuracy: 70.312%
 
         *********
         Iteration: 501
-        Training cost:   0.87063 - Training accuracy:   75.391% 
-        Validation cost: 0.7792 - Validation accuracy: 76.172% 
+        Training cost:   0.87063 - Training accuracy:   75.391%
+        Validation cost: 0.7792 - Validation accuracy: 76.172%
         ...
 
 ### Build your own Neural Net for MNIST
@@ -81,13 +81,13 @@ Results that will be displayed:
     Input X;
     Input Y;
     ```
-    
+
 * **Initialize Trainable Variables with random values**
     ```C++
     vector<Node *> trainables = {&W1, &b1, &W2, &b2};
     initTrainables(trainables);
     ```
-    
+
 * **Build Graph**
     ```C++
     Linear hidden1(&X, &W1, &b1);
@@ -98,7 +98,7 @@ Results that will be displayed:
     vector<Node *> graph = {&hidden1, &W1, &b1, &W2, &b2, &X, &outHidden1, &out, &Y, &cost};
     buildGraph(graph);
     ```
-    
+
 * **Example of forward pass, backward pass and SGD update**
     ```C++
     //Define a std::map object to feed values to the Network Inputs
@@ -113,7 +113,10 @@ Results that will be displayed:
     trainCost = cost.getValues();
     trainAccuracy = getAccuracy(argMax(trainLabelBatch), argMax(cost.getProbabilities()));
     ```
-    
+
 ## TODO
 * [ ] Make test for SGD
-* [ ] Make path to mnist independent from where main is called from 
+* [ ] Make path to mnist independent from where main is called from
+* [ ] Implement Early stopping
+* [ ] Implement Adam Optimizer
+* [ ] Implement ReLU Node

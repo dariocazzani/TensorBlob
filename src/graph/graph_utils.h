@@ -10,6 +10,7 @@
 #include <boost/range/adaptor/reversed.hpp>
 
 
+void buildGraph(vector<Node *> & graph);
 /*
  * Use Kahn's algorithm to sort nodes
  * Sort Graph so that we can run forward (and backward) propagation
@@ -25,7 +26,6 @@ void forwardBackward(const vector<Node *> &graph);
 void feedValues(map<Node*, Eigen::MatrixXd> inputMap);
 
 void initTrainables(vector<Node *> &trainables);
-
 
 void buildGraph(vector<Node *> & graph)
 {
@@ -136,13 +136,15 @@ void initTrainables(vector<Node *> &trainables)
   for(auto n : trainables)
   {
     // Verify that we were given only Variable nodes
-    if(Variable* b1 = dynamic_cast<Variable*> (n)) {;}
+    if(Variable* b1 = dynamic_cast<Variable*> (n))
+    {
+      Eigen::MatrixXd tempValues = Eigen::MatrixXd::Random(n->getValuesRows(), n->getValuesCols());
+      n->setValues(tempValues);
+    }
     else
     {
       throw invalid_argument("Invalid Node type.");
     }
-    Eigen::MatrixXd tempValues = Eigen::MatrixXd::Random(n->getValuesRows(), n->getValuesCols());
-    n->setValues(tempValues);
   }
 }
 
