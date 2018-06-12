@@ -121,7 +121,7 @@ void feedValues(map<Node*, Eigen::MatrixXd> inputMap)
   map<Node*, Eigen::MatrixXd>::iterator it = inputMap.begin();
   while(it != inputMap.end()){
     // Verify that we were given only Input nodes to assign values to
-    if(Input* b1 = dynamic_cast<Input*> (it->first)){
+    if(Input* b1 __attribute__((unused)) = dynamic_cast<Input*> (it->first)){
       it->first->setValues(it->second);
     }
     else{
@@ -136,7 +136,7 @@ void initTrainables(vector<Node *> &trainables)
   for(auto n : trainables)
   {
     // Verify that we were given only Variable nodes
-    if(Variable* b1 = dynamic_cast<Variable*> (n))
+    if(Variable* b1 __attribute__((unused)) = dynamic_cast<Variable*> (n))
     {
       Eigen::MatrixXd tempValues = Eigen::MatrixXd::Random(n->getValuesRows(), n->getValuesCols());
       n->setValues(tempValues);

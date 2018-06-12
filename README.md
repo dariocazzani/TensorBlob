@@ -20,6 +20,8 @@ rm train-images-idx3-ubyte.gz train-labels-idx1-ubyte.gz
 
 ### Build, run tests and execute main
 ```bash
+mkdir -p bin
+mkdir -p build
 make all && bin/main
 ```
 
