@@ -18,6 +18,15 @@ gunzip -c train-labels-idx1-ubyte.gz > data/train-labels-idx1-ubyte
 rm train-images-idx3-ubyte.gz train-labels-idx1-ubyte.gz
 ```
 
+### Install Boost
+
+On Mac, install Boost with [Homebrew](https://brew.sh/):
+```bash
+brew install boost
+```
+
+Or visit [boost.org](https://www.boost.org/doc/libs/1_67_0/more/getting_started/index.html) to download and install.
+
 ### Build, run tests and execute main
 ```bash
 mkdir -p bin
